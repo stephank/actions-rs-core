@@ -1,7 +1,6 @@
 import * as github from '@actions/github';
 
-// `@actions/github` does not re-export `GitHub` type, thanks for nothing.
-type GitHub = any;
+type GitHub = ReturnType<typeof github.getOctokit>;
 
 interface Output {
     title: string;
@@ -31,7 +30,7 @@ export class CheckReporter {
     ): Promise<number> {
         const { owner, repo } = github.context.repo;
 
-        const response = await this.client.checks.create({
+        const response = await this.client.rest.checks.create({
             owner: owner,
             repo: repo,
             name: this.checkName,
@@ -64,7 +63,7 @@ export class CheckReporter {
         const { owner, repo } = github.context.repo;
 
         // TODO: Check for errors
-        await this.client.checks.update({
+        await this.client.rest.checks.update({
             owner: owner,
             repo: repo,
             name: this.checkName,
@@ -82,7 +81,7 @@ export class CheckReporter {
         const { owner, repo } = github.context.repo;
 
         // TODO: Check for errors
-        await this.client.checks.update({
+        await this.client.rest.checks.update({
             owner: owner,
             repo: repo,
             name: this.checkName,
@@ -93,8 +92,7 @@ export class CheckReporter {
             output: {
                 title: this.checkName,
                 summary: 'Unhandled error',
-                text:
-                    'Check was cancelled due to unhandled error. Check the Action logs for details.',
+                text: 'Check was cancelled due to unhandled error. Check the Action logs for details.',
             },
         });
 
