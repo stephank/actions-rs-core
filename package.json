@@ -17,7 +17,8 @@
         "lint": "tsc --noEmit && eslint 'src/**/*.ts' '__tests__/**/*.ts'",
         "refresh": "rm -rf ./dist/* && npm run build",
         "test": "jest -c jest.config.json",
-        "watch": "tsc -p . -w"
+        "watch": "tsc -p . -w",
+        "prepare": "npm run refresh"
     },
     "repository": {
         "type": "git",
